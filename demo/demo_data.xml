@@ -1,0 +1,470 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <!-- ============================================
+             DEMO USERS
+             ============================================ -->
+
+        <!-- Demo Sales User 1 -->
+        <record id="user_sales_demo_1" model="res.users">
+            <field name="name">Ahmed Hassan (Sales)</field>
+            <field name="login">ahmed.sales@demo.com</field>
+            <field name="email">ahmed.sales@demo.com</field>
+            <field name="groups_id" eval="[(4, ref('sales_team.group_sale_salesman')),
+                                           (4, ref('sales_discount_approval_system.group_discount_user'))]"/>
+        </record>
+
+        <!-- Demo Sales User 2 -->
+        <record id="user_sales_demo_2" model="res.users">
+            <field name="name">Sara Mohamed (Sales)</field>
+            <field name="login">sara.sales@demo.com</field>
+            <field name="email">sara.sales@demo.com</field>
+            <field name="groups_id" eval="[(4, ref('sales_team.group_sale_salesman')),
+                                           (4, ref('sales_discount_approval_system.group_discount_user'))]"/>
+        </record>
+
+        <!-- Demo Sales Manager -->
+        <record id="user_manager_demo" model="res.users">
+            <field name="name">Mahmoud Ali (Manager)</field>
+            <field name="login">mahmoud.manager@demo.com</field>
+            <field name="email">mahmoud.manager@demo.com</field>
+            <field name="groups_id" eval="[(4, ref('sales_team.group_sale_manager')),
+                                           (4, ref('sales_discount_approval_system.group_discount_manager'))]"/>
+        </record>
+
+        <!-- ============================================
+             DEMO CUSTOMERS
+             ============================================ -->
+
+        <!-- Customer 1 - VIP -->
+        <record id="partner_demo_vip" model="res.partner">
+            <field name="name">Tech Solutions Egypt LLC</field>
+            <field name="email">info@techsolutions.com</field>
+            <field name="phone">+20 2 1234 5678</field>
+            <field name="street">15 Nile Street</field>
+            <field name="city">Cairo</field>
+            <field name="country_id" ref="base.eg"/>
+            <field name="customer_rank">1</field>
+        </record>
+
+        <!-- Customer 2 - Regular -->
+        <record id="partner_demo_regular" model="res.partner">
+            <field name="name">Digital Marketing Pro</field>
+            <field name="email">contact@digitalmarketing.com</field>
+            <field name="phone">+20 2 8765 4321</field>
+            <field name="street">22 Talaat Harb Street</field>
+            <field name="city">Alexandria</field>
+            <field name="country_id" ref="base.eg"/>
+            <field name="customer_rank">1</field>
+        </record>
+
+        <!-- Customer 3 - New -->
+        <record id="partner_demo_new" model="res.partner">
+            <field name="name">Smart Business Systems</field>
+            <field name="email">info@smartbusiness.com</field>
+            <field name="phone">+20 2 5555 7777</field>
+            <field name="street">10 El Nasr Road</field>
+            <field name="city">Giza</field>
+            <field name="country_id" ref="base.eg"/>
+            <field name="customer_rank">1</field>
+        </record>
+
+        <!-- ============================================
+             DEMO PRODUCTS
+             ============================================ -->
+
+        <!-- Product 1 - High-end -->
+        <record id="product_demo_laptop" model="product.product">
+            <field name="name">Professional Laptop Pro-X1</field>
+            <field name="type">consu</field>
+            <field name="categ_id" ref="product.product_category_all"/>
+            <field name="list_price">25000.00</field>
+            <field name="standard_price">18000.00</field>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
+            <field name="uom_po_id" ref="uom.product_uom_unit"/>
+            <field name="invoice_policy">order</field>
+        </record>
+
+        <!-- Product 2 - Mid-range -->
+        <record id="product_demo_monitor" model="product.product">
+            <field name="name">4K Monitor UltraView 32"</field>
+            <field name="type">consu</field>
+            <field name="categ_id" ref="product.product_category_all"/>
+            <field name="list_price">8500.00</field>
+            <field name="standard_price">6000.00</field>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
+            <field name="uom_po_id" ref="uom.product_uom_unit"/>
+            <field name="invoice_policy">order</field>
+        </record>
+
+        <!-- Product 3 - Accessories -->
+        <record id="product_demo_keyboard" model="product.product">
+            <field name="name">Mechanical Keyboard RGB</field>
+            <field name="type">consu</field>
+            <field name="categ_id" ref="product.product_category_all"/>
+            <field name="list_price">1200.00</field>
+            <field name="standard_price">800.00</field>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
+            <field name="uom_po_id" ref="uom.product_uom_unit"/>
+            <field name="invoice_policy">order</field>
+        </record>
+
+        <!-- Product 4 - Software -->
+        <record id="product_demo_software" model="product.product">
+            <field name="name">Business Software Suite Pro</field>
+            <field name="type">service</field>
+            <field name="categ_id" ref="product.product_category_all"/>
+            <field name="list_price">15000.00</field>
+            <field name="standard_price">5000.00</field>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
+            <field name="uom_po_id" ref="uom.product_uom_unit"/>
+            <field name="invoice_policy">order</field>
+        </record>
+
+        <!-- Product 5 - Mouse -->
+        <record id="product_demo_mouse" model="product.product">
+            <field name="name">Wireless Gaming Mouse</field>
+            <field name="type">consu</field>
+            <field name="categ_id" ref="product.product_category_all"/>
+            <field name="list_price">850.00</field>
+            <field name="standard_price">500.00</field>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
+            <field name="uom_po_id" ref="uom.product_uom_unit"/>
+            <field name="invoice_policy">order</field>
+        </record>
+
+        <!-- ============================================
+             SCENARIO 1: No Approval Needed (Discount 10%)
+             Order can be confirmed directly
+             ============================================ -->
+
+        <record id="sale_order_demo_low_discount" model="sale.order">
+            <field name="partner_id" ref="partner_demo_regular"/>
+            <field name="user_id" ref="user_sales_demo_1"/>
+            <field name="date_order" eval="(DateTime.now() - timedelta(days=5)).strftime('%Y-%m-%d %H:%M:%S')"/>
+            <field name="state">draft</field>
+            <field name="approval_state">none</field>
+        </record>
+
+        <record id="sale_order_line_demo_1_1" model="sale.order.line">
+            <field name="order_id" ref="sale_order_demo_low_discount"/>
+            <field name="product_id" ref="product_demo_monitor"/>
+            <field name="product_uom_qty">2</field>
+            <field name="price_unit">8500.00</field>
+            <field name="discount">10.0</field>
+        </record>
+
+        <record id="sale_order_line_demo_1_2" model="sale.order.line">
+            <field name="order_id" ref="sale_order_demo_low_discount"/>
+            <field name="product_id" ref="product_demo_keyboard"/>
+            <field name="product_uom_qty">2</field>
+            <field name="price_unit">1200.00</field>
+            <field name="discount">5.0</field>
+        </record>
+
+        <!-- ============================================
+             SCENARIO 2: Waiting for Approval (Discount 25%)
+             Request sent, manager needs to review
+             ============================================ -->
+
+        <record id="sale_order_demo_waiting" model="sale.order">
+            <field name="partner_id" ref="partner_demo_vip"/>
+            <field name="user_id" ref="user_sales_demo_1"/>
+            <field name="date_order" eval="(DateTime.now() - timedelta(days=2)).strftime('%Y-%m-%d %H:%M:%S')"/>
+            <field name="state">draft</field>
+            <field name="approval_state">waiting</field>
+        </record>
+
+        <record id="sale_order_line_demo_2_1" model="sale.order.line">
+            <field name="order_id" ref="sale_order_demo_waiting"/>
+            <field name="product_id" ref="product_demo_laptop"/>
+            <field name="product_uom_qty">5</field>
+            <field name="price_unit">25000.00</field>
+            <field name="discount">25.0</field>
+        </record>
+
+        <record id="sale_order_line_demo_2_2" model="sale.order.line">
+            <field name="order_id" ref="sale_order_demo_waiting"/>
+            <field name="product_id" ref="product_demo_software"/>
+            <field name="product_uom_qty">5</field>
+            <field name="price_unit">15000.00</field>
+            <field name="discount">20.0</field>
+        </record>
+
+        <!-- Approval History - Request -->
+        <record id="approval_history_demo_2" model="sale.order.approval">
+            <field name="order_id" ref="sale_order_demo_waiting"/>
+            <field name="user_id" ref="user_sales_demo_1"/>
+            <field name="action">requested</field>
+            <field name="reason">VIP customer requesting bulk purchase discount of 25%</field>
+            <field name="date" eval="(DateTime.now() - timedelta(days=2)).strftime('%Y-%m-%d %H:%M:%S')"/>
+            <field name="discount_percentage">25.0</field>
+        </record>
+
+        <!-- ============================================
+             SCENARIO 3: Approved (Discount 30%)
+             Previously requested and approved
+             ============================================ -->
+
+        <record id="sale_order_demo_approved" model="sale.order">
+            <field name="partner_id" ref="partner_demo_vip"/>
+            <field name="user_id" ref="user_sales_demo_2"/>
+            <field name="approver_id" ref="user_manager_demo"/>
+            <field name="date_order" eval="(DateTime.now() - timedelta(days=7)).strftime('%Y-%m-%d %H:%M:%S')"/>
+            <field name="state">draft</field>
+            <field name="approval_state">approved</field>
+        </record>
+
+        <record id="sale_order_line_demo_3_1" model="sale.order.line">
+            <field name="order_id" ref="sale_order_demo_approved"/>
+            <field name="product_id" ref="product_demo_laptop"/>
+            <field name="product_uom_qty">10</field>
+            <field name="price_unit">25000.00</field>
+            <field name="discount">30.0</field>
+        </record>
+
+        <record id="sale_order_line_demo_3_2" model="sale.order.line">
+            <field name="order_id" ref="sale_order_demo_approved"/>
+            <field name="product_id" ref="product_demo_monitor"/>
+            <field name="product_uom_qty">10</field>
+            <field name="price_unit">8500.00</field>
+            <field name="discount">25.0</field>
+        </record>
+
+        <!-- Approval History - Request -->
+        <record id="approval_history_demo_3_1" model="sale.order.approval">
+            <field name="order_id" ref="sale_order_demo_approved"/>
+            <field name="user_id" ref="user_sales_demo_2"/>
+            <field name="action">requested</field>
+            <field name="reason">Large order for VIP customer - annual contract renewal</field>
+            <field name="date" eval="(DateTime.now() - timedelta(days=7, hours=2)).strftime('%Y-%m-%d %H:%M:%S')"/>
+            <field name="discount_percentage">30.0</field>
+        </record>
+
+        <!-- Approval History - Approved -->
+        <record id="approval_history_demo_3_2" model="sale.order.approval">
+            <field name="order_id" ref="sale_order_demo_approved"/>
+            <field name="user_id" ref="user_manager_demo"/>
+            <field name="action">approved</field>
+            <field name="reason">Approved - Strategic customer, good payment history</field>
+            <field name="date" eval="(DateTime.now() - timedelta(days=7)).strftime('%Y-%m-%d %H:%M:%S')"/>
+            <field name="discount_percentage">30.0</field>
+        </record>
+
+        <!-- ============================================
+             SCENARIO 4: Rejected (Discount 35%)
+             Requested but rejected by manager
+             ============================================ -->
+
+        <record id="sale_order_demo_rejected" model="sale.order">
+            <field name="partner_id" ref="partner_demo_new"/>
+            <field name="user_id" ref="user_sales_demo_1"/>
+            <field name="approver_id" ref="user_manager_demo"/>
+            <field name="date_order" eval="(DateTime.now() - timedelta(days=4)).strftime('%Y-%m-%d %H:%M:%S')"/>
+            <field name="state">draft</field>
+            <field name="approval_state">rejected</field>
+        </record>
+
+        <record id="sale_order_line_demo_4_1" model="sale.order.line">
+            <field name="order_id" ref="sale_order_demo_rejected"/>
+            <field name="product_id" ref="product_demo_laptop"/>
+            <field name="product_uom_qty">3</field>
+            <field name="price_unit">25000.00</field>
+            <field name="discount">35.0</field>
+        </record>
+
+        <record id="sale_order_line_demo_4_2" model="sale.order.line">
+            <field name="order_id" ref="sale_order_demo_rejected"/>
+            <field name="product_id" ref="product_demo_software"/>
+            <field name="product_uom_qty">3</field>
+            <field name="price_unit">15000.00</field>
+            <field name="discount">30.0</field>
+        </record>
+
+        <!-- Approval History - Request -->
+        <record id="approval_history_demo_4_1" model="sale.order.approval">
+            <field name="order_id" ref="sale_order_demo_rejected"/>
+            <field name="user_id" ref="user_sales_demo_1"/>
+            <field name="action">requested</field>
+            <field name="reason">New customer requesting competitive discount</field>
+            <field name="date" eval="(DateTime.now() - timedelta(days=4, hours=3)).strftime('%Y-%m-%d %H:%M:%S')"/>
+            <field name="discount_percentage">35.0</field>
+        </record>
+
+        <!-- Approval History - Rejected -->
+        <record id="approval_history_demo_4_2" model="sale.order.approval">
+            <field name="order_id" ref="sale_order_demo_rejected"/>
+            <field name="user_id" ref="user_manager_demo"/>
+            <field name="action">rejected</field>
+            <field name="reason">Discount too high for new customer. No payment history. Maximum approved discount for new customers is 20%. Please revise.</field>
+            <field name="date" eval="(DateTime.now() - timedelta(days=4)).strftime('%Y-%m-%d %H:%M:%S')"/>
+            <field name="discount_percentage">35.0</field>
+        </record>
+
+        <!-- ============================================
+             SCENARIO 5: Multiple Approval Attempts
+             Rejected first, then approved with lower discount
+             ============================================ -->
+
+        <record id="sale_order_demo_multi_approval" model="sale.order">
+            <field name="partner_id" ref="partner_demo_regular"/>
+            <field name="user_id" ref="user_sales_demo_2"/>
+            <field name="approver_id" ref="user_manager_demo"/>
+            <field name="date_order" eval="(DateTime.now() - timedelta(days=10)).strftime('%Y-%m-%d %H:%M:%S')"/>
+            <field name="state">sale</field>
+            <field name="approval_state">approved</field>
+        </record>
+
+        <record id="sale_order_line_demo_5_1" model="sale.order.line">
+            <field name="order_id" ref="sale_order_demo_multi_approval"/>
+            <field name="product_id" ref="product_demo_monitor"/>
+            <field name="product_uom_qty">8</field>
+            <field name="price_unit">8500.00</field>
+            <field name="discount">22.0</field>
+        </record>
+
+        <record id="sale_order_line_demo_5_2" model="sale.order.line">
+            <field name="order_id" ref="sale_order_demo_multi_approval"/>
+            <field name="product_id" ref="product_demo_keyboard"/>
+            <field name="product_uom_qty">8</field>
+            <field name="price_unit">1200.00</field>
+            <field name="discount">15.0</field>
+        </record>
+
+        <!-- First Request (30%) - Rejected -->
+        <record id="approval_history_demo_5_1" model="sale.order.approval">
+            <field name="order_id" ref="sale_order_demo_multi_approval"/>
+            <field name="user_id" ref="user_sales_demo_2"/>
+            <field name="action">requested</field>
+            <field name="reason">Customer asking for 30% discount on bulk order</field>
+            <field name="date" eval="(DateTime.now() - timedelta(days=10, hours=5)).strftime('%Y-%m-%d %H:%M:%S')"/>
+            <field name="discount_percentage">30.0</field>
+        </record>
+
+        <record id="approval_history_demo_5_2" model="sale.order.approval">
+            <field name="order_id" ref="sale_order_demo_multi_approval"/>
+            <field name="user_id" ref="user_manager_demo"/>
+            <field name="action">rejected</field>
+            <field name="reason">30% is too high for this product category. Maximum 25% for monitors. Please revise discount.</field>
+            <field name="date" eval="(DateTime.now() - timedelta(days=10, hours=4)).strftime('%Y-%m-%d %H:%M:%S')"/>
+            <field name="discount_percentage">30.0</field>
+        </record>
+
+        <!-- Second Request (22%) - Approved -->
+        <record id="approval_history_demo_5_3" model="sale.order.approval">
+            <field name="order_id" ref="sale_order_demo_multi_approval"/>
+            <field name="user_id" ref="user_sales_demo_2"/>
+            <field name="action">requested</field>
+            <field name="reason">Revised discount to 22% as per manager feedback</field>
+            <field name="date" eval="(DateTime.now() - timedelta(days=10, hours=2)).strftime('%Y-%m-%d %H:%M:%S')"/>
+            <field name="discount_percentage">22.0</field>
+        </record>
+
+        <record id="approval_history_demo_5_4" model="sale.order.approval">
+            <field name="order_id" ref="sale_order_demo_multi_approval"/>
+            <field name="user_id" ref="user_manager_demo"/>
+            <field name="action">approved</field>
+            <field name="reason">Approved - Discount within acceptable range</field>
+            <field name="date" eval="(DateTime.now() - timedelta(days=10)).strftime('%Y-%m-%d %H:%M:%S')"/>
+            <field name="discount_percentage">22.0</field>
+        </record>
+
+        <!-- ============================================
+             SCENARIO 6: Confirmed Order (Approved & Confirmed)
+             Complete workflow example
+             ============================================ -->
+
+        <record id="sale_order_demo_confirmed" model="sale.order">
+            <field name="partner_id" ref="partner_demo_vip"/>
+            <field name="user_id" ref="user_sales_demo_1"/>
+            <field name="approver_id" ref="user_manager_demo"/>
+            <field name="date_order" eval="(DateTime.now() - timedelta(days=15)).strftime('%Y-%m-%d %H:%M:%S')"/>
+            <field name="state">sale</field>
+            <field name="approval_state">approved</field>
+        </record>
+
+        <record id="sale_order_line_demo_6_1" model="sale.order.line">
+            <field name="order_id" ref="sale_order_demo_confirmed"/>
+            <field name="product_id" ref="product_demo_laptop"/>
+            <field name="product_uom_qty">20</field>
+            <field name="price_unit">25000.00</field>
+            <field name="discount">28.0</field>
+        </record>
+
+        <record id="sale_order_line_demo_6_2" model="sale.order.line">
+            <field name="order_id" ref="sale_order_demo_confirmed"/>
+            <field name="product_id" ref="product_demo_monitor"/>
+            <field name="product_uom_qty">20</field>
+            <field name="price_unit">8500.00</field>
+            <field name="discount">25.0</field>
+        </record>
+
+        <record id="sale_order_line_demo_6_3" model="sale.order.line">
+            <field name="order_id" ref="sale_order_demo_confirmed"/>
+            <field name="product_id" ref="product_demo_keyboard"/>
+            <field name="product_uom_qty">20</field>
+            <field name="price_unit">1200.00</field>
+            <field name="discount">20.0</field>
+        </record>
+
+        <record id="sale_order_line_demo_6_4" model="sale.order.line">
+            <field name="order_id" ref="sale_order_demo_confirmed"/>
+            <field name="product_id" ref="product_demo_mouse"/>
+            <field name="product_uom_qty">20</field>
+            <field name="price_unit">850.00</field>
+            <field name="discount">20.0</field>
+        </record>
+
+        <!-- Approval History -->
+        <record id="approval_history_demo_6_1" model="sale.order.approval">
+            <field name="order_id" ref="sale_order_demo_confirmed"/>
+            <field name="user_id" ref="user_sales_demo_1"/>
+            <field name="action">requested</field>
+            <field name="reason">Large corporate order - complete office setup for 20 employees</field>
+            <field name="date" eval="(DateTime.now() - timedelta(days=15, hours=6)).strftime('%Y-%m-%d %H:%M:%S')"/>
+            <field name="discount_percentage">28.0</field>
+        </record>
+
+        <record id="approval_history_demo_6_2" model="sale.order.approval">
+            <field name="order_id" ref="sale_order_demo_confirmed"/>
+            <field name="user_id" ref="user_manager_demo"/>
+            <field name="action">approved</field>
+            <field name="reason">Approved - Excellent opportunity, long-term customer, bulk order justifies discount</field>
+            <field name="date" eval="(DateTime.now() - timedelta(days=15, hours=2)).strftime('%Y-%m-%d %H:%M:%S')"/>
+            <field name="discount_percentage">28.0</field>
+        </record>
+
+        <!-- ============================================
+             SCENARIO 7: Edge Case - High discount waiting
+             Testing threshold boundaries
+             ============================================ -->
+
+        <record id="sale_order_demo_threshold_test" model="sale.order">
+            <field name="partner_id" ref="partner_demo_new"/>
+            <field name="user_id" ref="user_sales_demo_2"/>
+            <field name="date_order" eval="(DateTime.now() - timedelta(days=1)).strftime('%Y-%m-%d %H:%M:%S')"/>
+            <field name="state">draft</field>
+            <field name="approval_state">waiting</field>
+        </record>
+
+        <record id="sale_order_line_demo_7_1" model="sale.order.line">
+            <field name="order_id" ref="sale_order_demo_threshold_test"/>
+            <field name="product_id" ref="product_demo_software"/>
+            <field name="product_uom_qty">1</field>
+            <field name="price_unit">15000.00</field>
+            <field name="discount">21.0</field>
+        </record>
+
+        <!-- Approval History -->
+        <record id="approval_history_demo_7" model="sale.order.approval">
+            <field name="order_id" ref="sale_order_demo_threshold_test"/>
+            <field name="user_id" ref="user_sales_demo_2"/>
+            <field name="action">requested</field>
+            <field name="reason">Just above threshold - customer requesting 21% discount</field>
+            <field name="date" eval="(DateTime.now() - timedelta(days=1)).strftime('%Y-%m-%d %H:%M:%S')"/>
+            <field name="discount_percentage">21.0</field>
+        </record>
+
+    </data>
+</odoo>

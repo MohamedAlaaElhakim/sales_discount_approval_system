@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <!-- 1. قالب طلب الموافقة -->
+        <record id="email_template_approval_request" model="mail.template">
+            <field name="name">Sales Order: Discount Approval Request</field>
+            <field name="model_id" ref="sale.model_sale_order"/>
+            <field name="subject">Discount Approval Required: {{ object.name }}</field>
+            <!-- [تم الإصلاح]: تم حذف email_to لأننا نرسله للمدراء من داخل كود البايثون -->
+            <field name="body_html" type="html">
+                <div style="margin: 0px; padding: 0px;">
+                    <p style="margin: 0px; padding: 0px; font-size: 13px;">
+                        Hello,<br/><br/>
+                        A discount approval has been requested by <b><t t-out="object.user_id.name"/></b> for Sales Order <b><t t-out="object.name"/></b>.<br/><br/>
+                        <b>Maximum Discount:</b> <t t-out="object.max_line_discount"/>%<br/>
+                        <b>Threshold:</b> <t t-out="object.discount_threshold"/>%<br/>
+                        <br/>
+                        Please review and approve or reject the discount.
+                    </p>
+                </div>
+            </field>
+        </record>
+
+        <!-- 2. قالب الموافقة -->
+        <record id="email_template_approval_granted" model="mail.template">
+            <field name="name">Sales Order: Discount Approved</field>
+            <field name="model_id" ref="sale.model_sale_order"/>
+            <field name="subject">Discount Approved: {{ object.name }}</field>
+            <field name="body_html" type="html">
+                <div style="margin: 0px; padding: 0px;">
+                    <p style="margin: 0px; padding: 0px; font-size: 13px;">
+                        Hello <t t-out="object.user_id.name"/>,<br/><br/>
+                        Great news! The discount of <b><t t-out="object.max_line_discount"/>%</b> on your Sales Order <b><t t-out="object.name"/></b> has been <b>Approved</b> by <t t-out="object.approver_id.name"/>.<br/><br/>
+                        You can now proceed to confirm the order.
+                    </p>
+                </div>
+            </field>
+        </record>
+
+        <!-- 3. قالب الرفض -->
+        <record id="email_template_approval_rejected" model="mail.template">
+            <field name="name">Sales Order: Discount Rejected</field>
+            <field name="model_id" ref="sale.model_sale_order"/>
+            <field name="subject">Discount Rejected: {{ object.name }}</field>
+            <field name="body_html" type="html">
+                <div style="margin: 0px; padding: 0px;">
+                    <p style="margin: 0px; padding: 0px; font-size: 13px;">
+                        Hello <t t-out="object.user_id.name"/>,<br/><br/>
+                        The discount request for Sales Order <b><t t-out="object.name"/></b> has been <b>Rejected</b> by <t t-out="object.approver_id.name"/>.<br/><br/>
+                        <b>Reason for Rejection:</b><br/>
+                        <!-- [تم الإصلاح الكبير]: فلترة السجلات المرفوضة فقط وترتيبها لجلب أحدث سبب رفض -->
+                        <t t-set="rejected_records" t-value="object.approval_history_ids.filtered(lambda h: h.action == 'rejected').sorted(lambda r: r.date, reverse=True)"/>
+                        <i><t t-out="rejected_records[0].reason if rejected_records else 'No reason provided'"/></i>
+                        <br/><br/>
+                        Please adjust the discount and submit a new request if needed.
+                    </p>
+                </div>
+            </field>
+        </record>
+
+    </data>
+</odoo>

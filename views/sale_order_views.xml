@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_order_form_inherit_discount_approval" model="ir.ui.view">
+        <field name="name">sale.order.form.inherit.discount.approval</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+
+            <!-- إضافة أزرار الموافقة في ترويسة الطلب -->
+            <xpath expr="//header" position="inside">
+                <!-- جلب الحقول المخفية أولاً لاستخدامها في الشروط -->
+                <field name="show_request_approval" invisible="1"/>
+                <field name="show_approve_reject" invisible="1"/>
+
+                <!--[تم الإصلاح]: استخدام not بدلاً من == False -->
+                <button name="action_request_approval"
+                        type="object"
+                        string="Request Approval"
+                        class="btn-primary"
+                        invisible="not show_request_approval" />
+
+                <button name="action_approve_discount"
+                        type="object"
+                        string="Approve Discount"
+                        class="btn-success"
+                        invisible="not show_approve_reject" />
+
+                <button name="action_open_reject_wizard"
+                        type="object"
+                        string="Reject Discount"
+                        class="btn-danger"
+                        invisible="not show_approve_reject" />
+            </xpath>
+
+            <!-- إضافة شريط حالة الموافقة -->
+            <xpath expr="//field[@name='state']" position="before">
+                <field name="approval_state" widget="statusbar" statusbar_visible="none,waiting,approved,rejected"/>
+            </xpath>
+
+            <!-- إضافة بيانات الموافقة داخل الفورم -->
+            <xpath expr="//group[@name='sale_header']" position="inside">
+                <group name="discount_approval" string="Discount Information">
+                    <field name="max_line_discount" widget="percentage"/>
+                    <field name="discount_threshold" widget="percentage"/>
+                    <!-- [تم الإصلاح]: استخدام not بدلاً من == False -->
+                    <field name="approver_id" invisible="not approver_id"/>
+                </group>
+            </xpath>
+
+            <!-- إضافة تبويب سجل الموافقات (Approval History) -->
+            <xpath expr="//notebook" position="inside">
+                <page string="Approval History" name="approval_history">
+                    <field name="approval_history_ids" readonly="1">
+                        <tree decoration-success="action == 'approved'" decoration-danger="action == 'rejected'" decoration-info="action == 'requested'">
+                            <field name="date"/>
+                            <field name="user_id"/>
+                            <field name="action"/>
+                            <field name="discount_percentage" widget="percentage"/>
+                            <field name="reason"/>
+                        </tree>
+                    </field>
+                </page>
+            </xpath>
+
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Reject Reason Wizard Form -->
+    <record id="view_reject_reason_wizard_form" model="ir.ui.view">
+        <field name="name">sale.order.reject.wizard.form</field>
+        <field name="model">sale.order.reject.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="order_id" readonly="1"/>
+                            <field name="partner_id" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="max_discount" widget="percentage" readonly="1"/>
+                        </group>
+                    </group>
+                    <group string="Rejection Reason">
+                        <field name="reason" nolabel="1" 
+                               placeholder="Please provide a clear reason for rejecting this discount..."
+                               required="1"/>
+                    </group>
+                </sheet>
+                <footer>
+                    <button string="Confirm Rejection" 
+                            name="action_confirm_reject" 
+                            type="object" 
+                            class="btn-danger"/>
+                    <button string="Cancel" 
+                            class="btn-secondary" 
+                            special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+</odoo>
